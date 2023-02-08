@@ -70,7 +70,7 @@ function Header(){
                                 <img src={logo} alt="" className={clsx(styles.logo)}/>
                             </Link>
                         </div>
-                        <Tippy 
+                        {/* <Tippy 
                             interactive={true}
                             visible={true}
                             render={attrs => (
@@ -78,14 +78,14 @@ function Header(){
                                   My tippy box
                                 </div>
                               )}
-                        >
+                        > */}
                             <div className={clsx(styles.header_search)}>
                                 <input type="text" className={clsx(styles.search_input)} placeholder="Tìm kiếm..."/>
                                 <button className={clsx(styles.btn_search)}>
                                     <span className={clsx(styles.icon)}><FontAwesomeIcon icon={faMagnifyingGlass} /></span>
                                 </button>
                             </div>
-                        </Tippy>
+                        {/* </Tippy> */}
                         <div className={clsx(styles.header_log)}>
                             <Link to="/register" className={clsx(styles.header_log_left)}>Đăng ký</Link>
                             <span>|</span>
