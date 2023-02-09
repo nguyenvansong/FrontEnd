@@ -1,11 +1,10 @@
 import { Link } from 'react-router-dom';
 import './main.css';
 
+
 export default function ListAccount() {
   return (
-    <div className="App">
-      var NewComponent = React.createClass(
-      {
+<div className="App">
         <div>
           <title>Danh sách nhân viên | Quản trị Admin</title>
           <meta charSet="utf-8" />
@@ -37,77 +36,8 @@ export default function ListAccount() {
             href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"
           />
           {/* Navbar*/}
-          <header className="app-header">
-            {/* Sidebar toggle button*/}
-            <a
-              className="app-sidebar__toggle"
-              href="#"
-              data-toggle="sidebar"
-              aria-label="Hide Sidebar"
-            />
-            {/* Navbar Right Menu*/}
-            <ul className="app-nav">
-              {/* User Menu*/}
-              <li>
-                <a className="app-nav__item" href="/index.html">
-                  <i className="bx bx-log-out bx-rotate-180" />{" "}
-                </a>
-              </li>
-            </ul>
-          </header>
           {/* Sidebar menu*/}
           <div className="app-sidebar__overlay" data-toggle="sidebar" />
-          <aside className="app-sidebar">
-            <div className="app-sidebar__user">
-              <img
-                className="app-sidebar__user-avatar"
-                src="https://i0.wp.com/thatnhucuocsong.com.vn/wp-content/uploads/2022/09/anh-anime-chibi.jpg?resize=560%2C560&ssl=1"
-                width="50px"
-                alt="User Image"
-              />
-              <div>
-                <p className="app-sidebar__user-name">
-                  <b>Dương Diệp</b>
-                </p>
-              </div>
-            </div>
-            <hr />
-            <ul className="app-menu">
-              <li>
-                <a
-                  className="app-menu__item active"
-                  href="table-data-table.html"
-                >
-                  <i className="app-menu__icon bx bx-id-card" />
-                  <span className="app-menu__label">Quản lý tài khoản</span>
-                </a>
-              </li>
-              <li>
-                <a className="app-menu__item" href="table-data-product.html">
-                  <i className="app-menu__icon bx bx-purchase-tag-alt" />
-                  <span className="app-menu__label">Quản lý sản phẩm</span>
-                </a>
-              </li>
-              <li>
-                <a className="app-menu__item" href="table-data-oder.html">
-                  <i className="app-menu__icon bx bx-task" />
-                  <span className="app-menu__label">Quản lý đơn hàng</span>
-                </a>
-              </li>
-              <li>
-                <a className="app-menu__item" href="table-data-banned.html">
-                  <i className="app-menu__icon bx bx-run" />
-                  <span className="app-menu__label">Quản lý thương hiệu</span>
-                </a>
-              </li>
-              <li>
-                <a className="app-menu__item" href="quan-ly-bao-cao.html">
-                  <i className="app-menu__icon bx bx-pie-chart-alt-2" />
-                  <span className="app-menu__label">Báo cáo doanh thu</span>
-                </a>
-              </li>
-            </ul>
-          </aside>
           <main className="app-content">
             <div className="app-title">
               <ul className="app-breadcrumb breadcrumb side">
@@ -212,8 +142,7 @@ MODAL
           {/* Page specific javascripts*/}
           {/* Data table plugin*/}
         </div>
-      }
-      );
     </div>
+    
   );
 }
