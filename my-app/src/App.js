@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="App">
-      <SideBar/>
+       <SideBar/>
       <Routes>
         <Route exact path="/" element={<ListAccount/>}/>
         <Route exact path="/AddAcount" element={<AddAccount/>}/>
