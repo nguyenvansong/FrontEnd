@@ -1,64 +1,57 @@
 import "./main.css";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { MenuItem, Select } from "@mui/material";
 
-export default function EditCategory() {
+export default function AddCategory() {
   let navigate = useNavigate();
-  const { id } = useParams();
+
   const formData = new FormData();
-  const [category, setCategory] = useState({
-    categoryName: "",
-  });
-  const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
 
-  const { categoryName } = category;
+  const [imageName, setImageName] = useState();
+  const [productId, setProductId] = useState();
 
-  const onNameChange = (e) => {
-    setCategory({ ...category, categoryName: e.target.value });
-    setName(e.target.value);
-  };
+  const [products, setProducts] = useState([]);
+
   const onImageChange = (e) => {
-    setImage(e.target.files[0]);
+    setImageName(e.target.files[0]);
+  };
+
+  const onProductChange = (e) => {
+    const selectedId = e.target.value;
+    setProductId(selectedId);
   };
 
   useEffect(() => {
-    loadCategory();
+    loadProduct();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    formData.append("categoryName", name);
-
-    if (image == null) {
-      await axios.put(`http://localhost:8080/category/noImage/${id}`, formData);
-    } else {
-      formData.append("categoryImage", image);
-      await axios
-        .put(`http://localhost:8080/category/withImage/${id}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          console.log("File upload successfully ");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-
-    navigate("/admin/category");
+    formData.append("imageName", imageName);
+    formData.append("productId", productId);
+    await axios
+      .post("http://localhost:8080/image/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        console.log("File upload successfully ");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    navigate("/admin/image");
   };
-
-  const loadCategory = async () => {
-    const result = await axios.get(`http://localhost:8080/category/${id}`);
-    setCategory(result.data);
+  const loadProduct = async () => {
+    const result = await axios.get("http://localhost:8080/product/getAll");
+    setProducts(result.data);
   };
   return (
     <div>
-      <title>Thêm nhân viên | Quản trị Adm  in</title>
+      <title>Thêm nhân viên | Quản trị Admin</title>
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,49 +91,55 @@ export default function EditCategory() {
         <div className="app-title mt-5">
           <ul className="app-breadcrumb breadcrumb">
             <li className="breadcrumb-item">
-              <a href="/admin/category">Danh sách danh mục</a>
+              <a href="/admin/image">Danh sách hình ảnh</a>
             </li>
             <li className="breadcrumb-item">
-              <a href="#">Sửa danh mục</a>
+              <a href="#">Thêm hình ảnh</a>
             </li>
           </ul>
         </div>
         <div className="row">
           <div className="col-md-12">
             <div className="tile">
-              <h3 className="tile-title">Sửa danh mục</h3>
-              <div className="tile-body">
-              <form
+              <h3 className="tile-title">Thêm hình ảnh</h3>
+              <div className="tile-body form-content">
+                <form
                   className="col"
                   onSubmit={(e) => onSubmit(e)}
                   encType="multipart/form-data"
                 >
                   <div className="form-group col-md-4">
-                    <label className="control-label">Tên danh mục</label>
-                    <input
-                      placeholder="Tên danh mục"
-                      className="form-control category-name"
-                      type="text"
-                      required
-                      value={categoryName}
-                      onInput={(e) => onNameChange(e)}
-                    />
+                    <label className="control-label">Tên sản phẩm</label>
+                    <Select fullWidth onChange={onProductChange} required>
+                      {products.map((product) => (
+                        <MenuItem
+                          key={product.productID}
+                          value={product.productID}
+                        >
+                          {product.productName}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </div>
 
                   <div className="mb-3 col-md-5">
-                    <label className="control-label">Ảnh danh mục</label>
+                    <label className="control-label">Ảnh</label>
                     <input
                       type={"file"}
+                      required
                       className="form-control"
                       placeholder="Upload"
-                      name="file"
-                      onChange={(e) => onImageChange(e)}
+                      name="imageName"
+                      onChange={onImageChange}
                     />
                   </div>
                   <button type="submit" className="btn btn-outline-primary ">
                     Submit
                   </button>
-                  <Link className="btn btn-outline-danger mx-2 cancel" to="/admin/category">
+                  <Link
+                    className="btn btn-outline-danger mx-2 cancel"
+                    to="/admin/category"
+                  >
                     Cancel
                   </Link>
                 </form>

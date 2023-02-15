@@ -7,16 +7,17 @@ export default function EditCategory() {
   let navigate = useNavigate();
   const { id } = useParams();
   const formData = new FormData();
-  const [category, setCategory] = useState({
-    categoryName: "",
+  const [brand, setBrand] = useState({
+    brandName: "",
   });
+
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
 
-  const { categoryName } = category;
+  const { brandName } = brand;
 
   const onNameChange = (e) => {
-    setCategory({ ...category, categoryName: e.target.value });
+    setBrand({ ...brand, brandName: e.target.value });
     setName(e.target.value);
   };
   const onImageChange = (e) => {
@@ -24,19 +25,29 @@ export default function EditCategory() {
   };
 
   useEffect(() => {
-    loadCategory();
+    loadBrand();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    formData.append("categoryName", name);
-
+    formData.append("brandName", name);
     if (image == null) {
-      await axios.put(`http://localhost:8080/category/noImage/${id}`, formData);
-    } else {
-      formData.append("categoryImage", image);
       await axios
-        .put(`http://localhost:8080/category/withImage/${id}`, formData, {
+        .put(`http://localhost:8080/brand/noImage/${id}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          console.log("File upload successfully ");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      formData.append("brandImage", image);
+      await axios
+        .put(`http://localhost:8080/brand/withImage/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -49,12 +60,12 @@ export default function EditCategory() {
         });
     }
 
-    navigate("/admin/category");
+    navigate("/admin/brand");
   };
 
-  const loadCategory = async () => {
-    const result = await axios.get(`http://localhost:8080/category/${id}`);
-    setCategory(result.data);
+  const loadBrand = async () => {
+    const result = await axios.get(`http://localhost:8080/brand/${id}`);
+    setBrand(result.data);
   };
   return (
     <div>
@@ -98,17 +109,17 @@ export default function EditCategory() {
         <div className="app-title mt-5">
           <ul className="app-breadcrumb breadcrumb">
             <li className="breadcrumb-item">
-              <a href="/admin/category">Danh sách danh mục</a>
+              <a href="/admin/brand">Danh sách thương hiệu</a>
             </li>
             <li className="breadcrumb-item">
-              <a href="#">Sửa danh mục</a>
+              <a href="#">Sửa thương hiệu</a>
             </li>
           </ul>
         </div>
         <div className="row">
           <div className="col-md-12">
             <div className="tile">
-              <h3 className="tile-title">Sửa danh mục</h3>
+              <h3 className="tile-title">Sửa thương hiệu</h3>
               <div className="tile-body">
               <form
                   className="col"
@@ -116,19 +127,19 @@ export default function EditCategory() {
                   encType="multipart/form-data"
                 >
                   <div className="form-group col-md-4">
-                    <label className="control-label">Tên danh mục</label>
+                    <label className="control-label">Tên thương hiệu</label>
                     <input
                       placeholder="Tên danh mục"
                       className="form-control category-name"
                       type="text"
                       required
-                      value={categoryName}
+                      value={brandName}
                       onInput={(e) => onNameChange(e)}
                     />
                   </div>
 
                   <div className="mb-3 col-md-5">
-                    <label className="control-label">Ảnh danh mục</label>
+                    <label className="control-label">Ảnh thương hiệu</label>
                     <input
                       type={"file"}
                       className="form-control"
@@ -138,10 +149,10 @@ export default function EditCategory() {
                     />
                   </div>
                   <button type="submit" className="btn btn-outline-primary ">
-                    Submit
+                    Xác nhận
                   </button>
-                  <Link className="btn btn-outline-danger mx-2 cancel" to="/admin/category">
-                    Cancel
+                  <Link className="btn btn-outline-danger mx-2 cancel" to="/admin/brand">
+                    Hủy
                   </Link>
                 </form>
               </div>

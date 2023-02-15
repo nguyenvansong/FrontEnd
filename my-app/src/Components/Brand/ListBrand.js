@@ -7,35 +7,36 @@ import axios from "axios";
 import * as Category from "../../apiSercive/categoryService";
 
 export default function ListCategory() {
-  const [categoryID, setCategoryID] = useState();
+
+  const [brandId, setBrandId] = useState();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    setCategoryID(id)
+    setBrandId(id)
     setShow(true);
   };
-  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
 
-  const deleteCategory = async (id) => {
-    await axios.delete(`http://localhost:8080/category/${id}`);
-    loadCategories();
+  const deleteBrand = async (id) => {
+    await axios.delete(`http://localhost:8080/brand/${id}`);
+    loadBrands();
     handleClose();
   };
 
   useEffect(() => {
-    loadCategories();
+    loadBrands();
   }, []);
 
-  const loadCategories = async () => {
-    const result = await axios.get("http://localhost:8080/category/getAll");
-    setCategories(result.data);
+  const loadBrands = async () => {
+    const result = await axios.get("http://localhost:8080/brand/getAll");
+    setBrands(result.data);
   };
 
   return (
     <div className="App">
       <div>
-        <title>Quản trị Admin</title>
+        <title>Quản trị thương hiệu</title>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -73,7 +74,7 @@ export default function ListCategory() {
             <ul className="app-breadcrumb breadcrumb side">
               <li className="breadcrumb-item active">
                 <a href="#">
-                  <b>Danh sách danh mục</b>
+                  <b>Danh sách thương hiệu</b>
                 </a>
               </li>
             </ul>
@@ -88,11 +89,11 @@ export default function ListCategory() {
                       <div className="col-sm-2">
                         <a
                           className="btn btn-add btn-sm"
-                          href="/admin/category/AddCategory"
+                          href="/admin/brand/AddBrand"
                           title="Thêm"
                         >
                           <i className="fas fa-plus" />
-                          Thêm danh mục
+                          Thêm thương hiệu
                         </a>
                       </div>
                     </div>
@@ -102,22 +103,22 @@ export default function ListCategory() {
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">Id</th>
-                          <th scope="col">Tên danh mục</th>
+                          <th scope="col">Tên thương hiệu</th>
                           <th scope="col">Hình ảnh</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {categories.map((category, index) => (
+                        {brands.map((brand, index) => (
                           <tr>
                             <th scope="row" key={index}>
                               {index + 1}
                             </th>
-                            <td>{category.categoryID}</td>
-                            <td>{category.categoryName}</td>
+                            <td>{brand.brandId}</td>
+                            <td>{brand.brandName}</td>
                             <td>
                               <img
-                                src={`http://localhost:8080/getimage/category/${category.categoryImage}`}
+                                src={`http://localhost:8080/getimage/brand/${brand.brandImage}`}
                                 alt="avatar"
                                 width={60}
                                 height={50}
@@ -127,13 +128,13 @@ export default function ListCategory() {
                             <td>
                               <Link
                                 className="btn btn-outline-primary mx-2 edit"
-                                to={`EditCategory/${category.categoryID}`}
+                                to={`/admin/brand/EditBrand/${brand.brandId}`}
                               >
                                 <i className="fas fa-edit" />
                               </Link>
                               <Button
                                 variant="primary"
-                                onClick={() => handleShow(category.categoryID)}
+                                onClick={() => handleShow(brand.brandId)}
                                 type="button"
                                 className="btn btn-danger mx-2"
                                 data-bs-toggle="modal"
@@ -144,7 +145,7 @@ export default function ListCategory() {
 
                               <Modal show={show} onHide={handleClose}>
                                 <Modal.Header closeButton>
-                                  <Modal.Title>Xóa danh mục</Modal.Title>
+                                  <Modal.Title>Xóa thương hiệu</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
                                   Bạn có chắc chắn muốn xóa?
@@ -152,9 +153,7 @@ export default function ListCategory() {
                                 <Modal.Footer>
                                   <Button
                                     variant="secondary"
-                                    onClick={() => {
-                                      deleteCategory(categoryID);
-                                    }}
+                                    onClick={() => deleteBrand(brandId)}
                                   >
                                     Xóa
                                   </Button>

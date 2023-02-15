@@ -2,78 +2,71 @@ import "./main.css";
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import * as Category from "../../apiSercive/categoryService";
+import { Link, useParams } from "react-router-dom";
 
 export default function ListCategory() {
-  const [categoryID, setCategoryID] = useState();
+  const [productID, setProductID] = useState();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    setCategoryID(id)
+    setProductID(id);
     setShow(true);
   };
-  const [categories, setCategories] = useState([]);
 
-  const deleteCategory = async (id) => {
-    await axios.delete(`http://localhost:8080/category/${id}`);
-    loadCategories();
-    handleClose();
-  };
-
+  const [image, setImage] = useState();
+  const [products, setProducts] = useState([]);
   useEffect(() => {
-    loadCategories();
+    loadProduct();
   }, []);
 
-  const loadCategories = async () => {
-    const result = await axios.get("http://localhost:8080/category/getAll");
-    setCategories(result.data);
+  const loadProduct = async () => {
+    const result = await axios.get("http://localhost:8080/product/getAll");
+    setProducts(result.data);
+  };
+
+  const { id } = useParams();
+
+  const deleteProduct = async (id) => {
+    await axios.delete(`http://localhost:8080/product/${id}`);
+    loadProduct();
   };
 
   return (
     <div className="App">
       <div>
-        <title>Quản trị Admin</title>
+        <title>Quản lý sản phẩm</title>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* Main CSS*/}
-        <link rel="stylesheet" type="text/css" href="css/main.css" />
-        <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
         {/* Custom styles for this template */}
-        <link href="modals.css" rel="stylesheet" />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css"
-        />
-        {/* or */}
-        <link
-          rel="stylesheet"
-          href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
-        />
-        {/* Font-icon css*/}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-        />
+
         <link
           rel="stylesheet"
           href="https://use.fontawesome.com/releases/v6.3.0/css/all.css"
         />
+        {/* bootstrap */}
         <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
           rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+          crossorigin="anonymous"
         />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+          crossorigin="anonymous"
+        ></script>
 
         <main className="app-content">
           <div className="app-title">
             <ul className="app-breadcrumb breadcrumb side">
               <li className="breadcrumb-item active">
                 <a href="#">
-                  <b>Danh sách danh mục</b>
+                  <b>Danh sách sản phẩm</b>
                 </a>
               </li>
             </ul>
@@ -88,52 +81,64 @@ export default function ListCategory() {
                       <div className="col-sm-2">
                         <a
                           className="btn btn-add btn-sm"
-                          href="/admin/category/AddCategory"
+                          href="/admin/product/AddProduct"
                           title="Thêm"
                         >
                           <i className="fas fa-plus" />
-                          Thêm danh mục
+                          Thêm sản phẩm
                         </a>
                       </div>
                     </div>
 
-                    <table className="table border shadow table-striped table-cate table-category">
+                    <table
+                      className="table table-hover table-bordered js-copytextarea table-category"
+                      id="sampleTable"
+                    >
                       <thead>
                         <tr>
                           <th scope="col">#</th>
-                          <th scope="col">Id</th>
-                          <th scope="col">Tên danh mục</th>
-                          <th scope="col">Hình ảnh</th>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Price</th>
+                          <th scope="col">Image</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {categories.map((category, index) => (
+                        {products.map((product, index) => (
                           <tr>
                             <th scope="row" key={index}>
                               {index + 1}
                             </th>
-                            <td>{category.categoryID}</td>
-                            <td>{category.categoryName}</td>
+                            <td>{product.productID}</td>
+                            <td>
+                              <Link to={`ViewProduct/${product.productID}`}>
+                                {product.productName}
+                              </Link>
+                            </td>
+                            <td>{product.price}</td>
                             <td>
                               <img
-                                src={`http://localhost:8080/getimage/category/${category.categoryImage}`}
+                                src={
+                                  product.images[0] == null
+                                    ? `http://localhost:8080/getimage/image/default.jpg`
+                                    : `http://localhost:8080/getimage/image/${product.images[0].imageName}`
+                                }
                                 alt="avatar"
                                 width={60}
                                 height={50}
                               />
                             </td>
-
                             <td>
                               <Link
                                 className="btn btn-outline-primary mx-2 edit"
-                                to={`EditCategory/${category.categoryID}`}
+                                to={`EditProduct/${product.productID}`}
                               >
                                 <i className="fas fa-edit" />
                               </Link>
                               <Button
                                 variant="primary"
-                                onClick={() => handleShow(category.categoryID)}
+                                onClick={() => handleShow(product.productID)}
                                 type="button"
                                 className="btn btn-danger mx-2"
                                 data-bs-toggle="modal"
@@ -153,7 +158,7 @@ export default function ListCategory() {
                                   <Button
                                     variant="secondary"
                                     onClick={() => {
-                                      deleteCategory(categoryID);
+                                      deleteProduct(productID);
                                     }}
                                   >
                                     Xóa

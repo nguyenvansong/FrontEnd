@@ -7,31 +7,31 @@ import axios from "axios";
 import * as Category from "../../apiSercive/categoryService";
 
 export default function ListCategory() {
-  const [categoryID, setCategoryID] = useState();
+  const [imageId, setImageId] = useState();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
-    setCategoryID(id)
+    setImageId(id);
     setShow(true);
   };
-  const [categories, setCategories] = useState([]);
-
-  const deleteCategory = async (id) => {
-    await axios.delete(`http://localhost:8080/category/${id}`);
-    loadCategories();
-    handleClose();
-  };
-
+  const [images, setImages] = useState([]);
   useEffect(() => {
-    loadCategories();
+    loadImges();
   }, []);
 
-  const loadCategories = async () => {
-    const result = await axios.get("http://localhost:8080/category/getAll");
-    setCategories(result.data);
+  const loadImges = async () => {
+    const result = await axios.get("http://localhost:8080/image/getAll");
+    setImages(result.data);
   };
 
+  const { id } = useParams();
+
+  const deleteImage = async (id) => {
+    await axios.delete(`http://localhost:8080/image/${id}`);
+    handleClose();
+    loadImges();
+  };
   return (
     <div className="App">
       <div>
@@ -73,7 +73,7 @@ export default function ListCategory() {
             <ul className="app-breadcrumb breadcrumb side">
               <li className="breadcrumb-item active">
                 <a href="#">
-                  <b>Danh sách danh mục</b>
+                  <b>Danh sách hình ảnh</b>
                 </a>
               </li>
             </ul>
@@ -88,11 +88,11 @@ export default function ListCategory() {
                       <div className="col-sm-2">
                         <a
                           className="btn btn-add btn-sm"
-                          href="/admin/category/AddCategory"
+                          href="/admin/image/AddImage"
                           title="Thêm"
                         >
                           <i className="fas fa-plus" />
-                          Thêm danh mục
+                          Thêm hình ảnh
                         </a>
                       </div>
                     </div>
@@ -102,22 +102,22 @@ export default function ListCategory() {
                         <tr>
                           <th scope="col">#</th>
                           <th scope="col">Id</th>
-                          <th scope="col">Tên danh mục</th>
+                          <th scope="col">Tên sản phẩm</th>
                           <th scope="col">Hình ảnh</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {categories.map((category, index) => (
+                        {images.map((image, index) => (
                           <tr>
                             <th scope="row" key={index}>
                               {index + 1}
                             </th>
-                            <td>{category.categoryID}</td>
-                            <td>{category.categoryName}</td>
+                            <td>{image.imageID}</td>
+                            <td>{image.product == null ? image.imageID : image.product.productName}</td>
                             <td>
                               <img
-                                src={`http://localhost:8080/getimage/category/${category.categoryImage}`}
+                                src={`http://localhost:8080/getimage/image/${image.imageName}`}
                                 alt="avatar"
                                 width={60}
                                 height={50}
@@ -127,13 +127,13 @@ export default function ListCategory() {
                             <td>
                               <Link
                                 className="btn btn-outline-primary mx-2 edit"
-                                to={`EditCategory/${category.categoryID}`}
+                                to={`EditImage/${image.imageID}`}
                               >
                                 <i className="fas fa-edit" />
                               </Link>
                               <Button
                                 variant="primary"
-                                onClick={() => handleShow(category.categoryID)}
+                                onClick={() => handleShow(image.imageID)}
                                 type="button"
                                 className="btn btn-danger mx-2"
                                 data-bs-toggle="modal"
@@ -153,7 +153,7 @@ export default function ListCategory() {
                                   <Button
                                     variant="secondary"
                                     onClick={() => {
-                                      deleteCategory(categoryID);
+                                      deleteImage(imageId);
                                     }}
                                   >
                                     Xóa

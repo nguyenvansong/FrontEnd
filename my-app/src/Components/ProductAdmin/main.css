@@ -1,15 +1,11 @@
 @charset "UTF-8";
-
 *{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-family-sarabun);
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   font-weight: 400;
   line-height: 1.5;
@@ -90,10 +86,11 @@ sup {
   top: -.5em;
 }
 
-a {
+a{
+  text-decoration: none !important;
   color: rgb(0, 28, 64);
-  text-decoration: none;
-  background-color: transparent
+  
+  background-color: transparent;
 }
 
 a:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
@@ -141,7 +138,7 @@ select,
 optgroup,
 textarea {
   margin: 0;
-  font-family: inherit;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: inherit;
   line-height: inherit;
   outline: none;
@@ -163,7 +160,7 @@ select {
 h5, .h5 {
   font-size: 1.09375rem;
   margin-bottom: 0.5rem;
-  font-family: inherit;
+  font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   line-height: 1.2;
   color: inherit;
@@ -396,7 +393,7 @@ small,
 }
 
 .table {
-  width: 60%;
+  width: 100%;
   max-width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
@@ -892,7 +889,7 @@ fieldset:disabled a.btn {
 }
 
 .breadcrumb-item + .breadcrumb-item:hover::before {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .breadcrumb-item + .breadcrumb-item:hover::before {
@@ -1171,6 +1168,11 @@ fieldset:disabled a.btn {
     max-width: 800px;
   }
 }
+ 
+.app-sidebar__user-avatar {
+  border-radius: 50% !important;
+}
+
 
 a.text-primary:hover, a.text-primary:focus {
   color: #00635a !important;
@@ -1344,6 +1346,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 @media (min-width: 768px) {
   .app-content {
     margin-left: 250px;
+    margin-top: 10px;
   }
 }
 
@@ -1399,6 +1402,60 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 .app-header__logo:focus, .app-header__logo:hover {
   text-decoration: none;
   color: #fff;
+}
+
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  padding-top: 20px;
+  width: 250px;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: auto;
+  z-index: 10;
+  background: rgb(0, 28, 64);
+}
+
+.app-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.app-sidebar__user {
+  display: block;
+  display: -ms-flexbox;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+
+.app-sidebar__user-avatar {
+  background: white;
+  border-radius: .357rem;
+  width: 70px;
+  border: 3px solid white;
+  margin-bottom: 10px;
+}
+
+.app-sidebar__user-name {
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.app-sidebar__user-name,
+.app-sidebar__user-designation {
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  margin-bottom: 0;
 }
 
 .app-menu {
@@ -1605,16 +1662,16 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   color: #003c00 !important;
 }
 
-.trash{
-  background: #f7c3c2;
-  border: none;
-  color: #de0400;
-}
-
 .action a{
-  width: 40px;
+  width: 37px;
+  height: 37px;
 }
-
+.cancel{
+  width: 100px;
+}
+.edit{
+  width: 80px ;
+}
 .table-category{
   width: 100%;
   text-align: center;
@@ -1623,13 +1680,4 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.category-name{
-  width: 100%;
-}
-.cancel{
-  width: 100px;
-}
-.edit{
-  width: 40px ;
 }

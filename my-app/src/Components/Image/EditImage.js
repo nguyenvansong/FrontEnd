@@ -2,41 +2,49 @@ import "./main.css";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { MenuItem, Select } from "@mui/material";
 
 export default function EditCategory() {
   let navigate = useNavigate();
   const { id } = useParams();
   const formData = new FormData();
-  const [category, setCategory] = useState({
-    categoryName: "",
+
+  const [imageName, setImageName] = useState(null);
+  const [productId, setProductId] = useState();
+  const [products, setProducts] = useState([]);
+
+  const [image, setImage] = useState({
+    product: null,
   });
-  const [name, setName] = useState("");
-  const [image, setImage] = useState(null);
 
-  const { categoryName } = category;
+  const { product } = image;
 
-  const onNameChange = (e) => {
-    setCategory({ ...category, categoryName: e.target.value });
-    setName(e.target.value);
-  };
   const onImageChange = (e) => {
-    setImage(e.target.files[0]);
+    setImageName(e.target.files[0]);
+  };
+
+  const onProductChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedProduct = products.filter(
+      (p) => p.productID == selectedId
+    )[0];
+    setProductId(selectedId);
+    setImage({ ...image, product: selectedProduct });
   };
 
   useEffect(() => {
-    loadCategory();
+    loadData();
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    formData.append("categoryName", name);
-
-    if (image == null) {
-      await axios.put(`http://localhost:8080/category/noImage/${id}`, formData);
+    formData.append("productId", productId);
+    if (imageName == null) {
+      await axios.put(`http://localhost:8080/image/noImage/${id}`, formData);
     } else {
-      formData.append("categoryImage", image);
+      formData.append("imageName", imageName);
       await axios
-        .put(`http://localhost:8080/category/withImage/${id}`, formData, {
+        .put(`http://localhost:8080/image/withImage/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -48,17 +56,22 @@ export default function EditCategory() {
           console.log(err);
         });
     }
-
-    navigate("/admin/category");
+    navigate("/admin/image");
   };
+  const loadData = async () => {
+    const resultProduct = await axios.get(
+      "http://localhost:8080/product/getAll"
+    );
+    setProducts(resultProduct.data);
 
-  const loadCategory = async () => {
-    const result = await axios.get(`http://localhost:8080/category/${id}`);
-    setCategory(result.data);
+    const resultImage = await axios.get(`http://localhost:8080/image/${id}`);
+    setImage(resultImage.data);
+
+    setProductId(resultImage.data.product.productID);
   };
   return (
     <div>
-      <title>Thêm nhân viên | Quản trị Adm  in</title>
+      <title>Thêm nhân viên | Quản trị Adm in</title>
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -98,49 +111,63 @@ export default function EditCategory() {
         <div className="app-title mt-5">
           <ul className="app-breadcrumb breadcrumb">
             <li className="breadcrumb-item">
-              <a href="/admin/category">Danh sách danh mục</a>
+              <a href="/admin/image">Danh sách hình ảnh</a>
             </li>
             <li className="breadcrumb-item">
-              <a href="#">Sửa danh mục</a>
+              <a href="#">Sửa hình ảnh</a>
             </li>
           </ul>
         </div>
         <div className="row">
           <div className="col-md-12">
             <div className="tile">
-              <h3 className="tile-title">Sửa danh mục</h3>
+              <h3 className="tile-title">Sửa hình ảnh</h3>
               <div className="tile-body">
-              <form
+                <form
                   className="col"
                   onSubmit={(e) => onSubmit(e)}
                   encType="multipart/form-data"
                 >
                   <div className="form-group col-md-4">
-                    <label className="control-label">Tên danh mục</label>
-                    <input
-                      placeholder="Tên danh mục"
-                      className="form-control category-name"
-                      type="text"
-                      required
-                      value={categoryName}
-                      onInput={(e) => onNameChange(e)}
-                    />
-                  </div>
-
-                  <div className="mb-3 col-md-5">
-                    <label className="control-label">Ảnh danh mục</label>
+                    <label htmlFor="ImageName" className="form-label ">
+                      Image
+                    </label>
                     <input
                       type={"file"}
                       className="form-control"
                       placeholder="Upload"
-                      name="file"
-                      onChange={(e) => onImageChange(e)}
+                      name="imageName"
+                      onChange={onImageChange}
                     />
+                  </div>
+
+                  <div className="mb-3 col-md-5">
+                    <label htmlFor="Product" className="form-label">
+                      Product
+                    </label>
+                    <Select
+                      fullWidth
+                      onChange={onProductChange}
+                      required
+                      value={product == null ? 0 : product.productID}
+                    >
+                      {products.map((product) => (
+                        <MenuItem
+                          key={product.productID}
+                          value={product.productID}
+                        >
+                          {product.productName}
+                        </MenuItem>
+                      ))}
+                    </Select>
                   </div>
                   <button type="submit" className="btn btn-outline-primary ">
                     Submit
                   </button>
-                  <Link className="btn btn-outline-danger mx-2 cancel" to="/admin/category">
+                  <Link
+                    className="btn btn-outline-danger mx-2 cancel"
+                    to="/admin/category"
+                  >
                     Cancel
                   </Link>
                 </form>
