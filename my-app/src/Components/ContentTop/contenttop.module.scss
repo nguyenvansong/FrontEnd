@@ -215,3 +215,44 @@ body{
 .content_right .ads img{
     width: 100%;
 }
+
+// Trang
+.mg_left_right{
+    margin: 0 159.6px;
+}
+.category_bonus{
+    margin-top: 2%;
+    margin-bottom: 4%;
+}
+.category_list_compo{
+    display: flex;
+    padding: 10px 0;
+    justify-content: space-between;
+    height: 100px;
+}
+.category_item_bonus{
+    list-style-type: none;
+    color: #000000;
+    cursor: pointer;
+    text-align: center;
+    font-size: large;;
+}
+
+.category_item_bonus a{
+    text-decoration: none;
+    color: #000000;
+    margin-left: 5px;
+}
+.category_item_bonus a:hover{
+    text-decoration: none;
+    color: #4eac4b;
+    margin-left: 5px;
+}
+.img_bonus{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+.img_bonus:hover{
+    border:#4eac4b 2px solid;
+}
