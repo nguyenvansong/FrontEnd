@@ -14,6 +14,15 @@ import product4 from './images/product4.jpg';
 import product5 from './images/product5.jpg';
 import product6 from './images/product6.jpg';
 import product7 from './images/product7.jpg';
+
+//Trang
+import maytinhban from './images/maytinhban.jpg';
+import manhinh from './images/manhinh.jpg';
+import linhkien from './images/linhkien.jpg';
+import luutru from './images/luutru.jpg';
+import thietbimang from './images/thietbimang.jpg';
+import vouchers from './images/vouchers.jpg';
+
 function ContentTop(){
     var settings = {
         arrows: false,
@@ -55,6 +64,58 @@ function ContentTop(){
       };
     return(
         <>
+            {/* bonus category */}
+            <div className={clsx(styles.category_bonus)}>
+                
+                {/*Trang  */}
+                <ul className={clsx(styles.category_list_compo, styles.mg_left_right)}>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={maytinhban} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/maytinhban">Máy tính bàn</Link>
+                    </li>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={manhinh} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/manhinh">Màn hình</Link>
+                    </li>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={linhkien} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/linhkienmaytinh">Linh kiện máy tính</Link>
+                    </li>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={luutru} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/thietbiluutru">Thiết bị lưu trữ</Link>
+                    </li>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={thietbimang} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/thietbimang">Thiết bị mạng</Link>
+                    </li>
+                    <li className={clsx(styles.category_item_bonus)}>
+                        <Link to="/">
+                            <img src={vouchers} alt="" className={clsx(styles.img_bonus)}/>
+                        </Link>
+                        <br></br>
+                        <Link to="/laptop/vouchers">Vouchers</Link>
+                    </li>
+                    
+                </ul>
+            </div>
+            {/* end bonus */}
+            
             <div className={clsx(styles.content_ads)}>
               <div className={clsx(styles.content_left)}>
                 <div className={clsx(styles.slider)}>
